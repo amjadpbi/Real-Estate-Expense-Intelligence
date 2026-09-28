@@ -79,12 +79,12 @@ From "PO / Job Name" in Order Summary, normalized:
 
 | As seen on Lowes | Normalized Project |
 |---|---|
-| Mountain / mountain / mountaib / 336 mountain / 336 Mountain | Mountain |
-| Vose / vose | Vose |
-| Franklin / franklin | Franklin |
-| Fairmount / fairmount | Fairmount |
-| 567 Fairmount / 567 fairmount | Fairmount |
-| Berkeley Heights / berkerly heights / berkeley heights | Circleview |
+| Ashford / mountain / mountaib / 336 mountain / 336 Ashford | Ashford |
+| Dunmore / vose | Dunmore |
+| Elmsworth / franklin | Elmsworth |
+| Cedarcrest / fairmount | Cedarcrest |
+| 567 Cedarcrest / 567 fairmount | Cedarcrest |
+| Berkeley Heights / berkerly heights / berkeley heights | Brookline |
 | Ignore / ignore | SKIP entirely, do not record (see Status Handling) |
 | Blank / "#---" | Leave Project blank, flag in col N: "No PO/Job Name set, confirm project" |
 | Anything else not listed | Record as-is, flag in col N: "Unrecognized PO/Job Name, confirm project" |
@@ -102,7 +102,7 @@ Format for column J:
 - Cash -> "Cash"
 - MyLowe's Money -> "MyLowe's Money"
 
-Column P (Paid By): use the name shown on the order (e.g. "Picked up by Jerry Cheng", or a name shown in the Payment Method block). If no name is shown, map the card's last-4 via the standard payment mapping (Jerry Cheng / Annie Cheng) and flag in col N if the card isn't in that mapping. If only "Gift Card" with no name anywhere, leave P blank and flag in col N: "Gift Card only, no name shown, confirm Paid By".
+Column P (Paid By): use the name shown on the order (e.g. "Picked up by Marcus Reyes", or a name shown in the Payment Method block). If no name is shown, map the card's last-4 via the standard payment mapping (Marcus Reyes / Diane Reyes) and flag in col N if the card isn't in that mapping. If only "Gift Card" with no name anywhere, leave P blank and flag in col N: "Gift Card only, no name shown, confirm Paid By".
 
 ---
 
