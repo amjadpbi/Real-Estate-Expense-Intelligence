@@ -82,7 +82,7 @@ If Class Name or Subclass Name is blank for a row (it happens even outside FEES)
 
 Use "HD_Project_Mapping.csv" (columns: "Raw Job Name / Project", "Normalized Project Name"). This is a lookup of Raw Job Name -> Normalized Project Name, sourced from V3's Project Settings tab.
 
-1. Match the row's Job Name against this file (case-insensitive, trim whitespace). If matched to a real project name (Mountain, Fairmount, Circleview, Ridgewood, Vose, Franklin, Joan, NYC, Preston, etc.) -> use that as Project.
+1. Match the row's Job Name against this file (case-insensitive, trim whitespace). If matched to a real project name (Ashford, Cedarcrest, Brookline, Graystone, Dunmore, Elmsworth, Foxglove, NYC, Hawthorne, etc.) -> use that as Project.
 2. If matched to "? Needs confirmation" (currently "west orange" and "orion") -> Project = the raw Job Name text, flag in col N: "Project needs stakeholder confirmation (west orange/orion)"
 3. If Job Name is blank, "ONLINE ORDER", or a WJ/WK/WH-prefixed code not found in the file, or any other value not found in the file -> leave Project blank, flag in col N: "No recognizable Job Name, confirm project"
 
