@@ -73,9 +73,9 @@ The PO/Job field on the order detail page (right sidebar, under "PO/Job:") is fr
 2. If PO/Job contains one of the known project names below (case-insensitive, as a whole word) -> Project = that name
 3. If PO/Job has text but matches none of the known names -> record the PO/Job text as-is in Project, and flag in col N for review
 
-Known project names: Mountain, Vose, Franklin, Fairmount, Circleview, Ridgewood, Joan, Preston, NYC
+Known project names: Ashford, Dunmore, Elmsworth, Cedarcrest, Brookline, Graystone, Foxglove, Hawthorne, NYC
 
-Examples seen: "336 Mountain" -> Mountain. "Mountain" -> Mountain.
+Examples seen: "336 Ashford" -> Ashford. "Ashford" -> Ashford.
 
 ---
 
@@ -101,7 +101,7 @@ Then map to column P using the table below. Close the receipt tab/PDF after read
 
 | Card | Paid By |
 |---|---|
-| Mastercard ...3520 | Jerry Cheng |
+| Mastercard ...3520 | Marcus Reyes |
 | Any other card | Leave P blank, flag in column N with the card's last-4 for stakeholder confirmation |
 
 ---
