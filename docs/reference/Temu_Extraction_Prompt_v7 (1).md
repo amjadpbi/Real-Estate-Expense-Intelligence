@@ -25,7 +25,7 @@ L	Class	From Taxonomy, blank if Personal
 M	Subclass	From Taxonomy, blank if Personal
 N	Reconciliatoin Status	Blank unless a genuine critical issue (see Edge Cases)
 O	Purchasing Nature / Business / Personal	"Business" or "Personal", based on product description only
-P	Paid By	Full name ("Jerry Cheng" / "Annie Cheng") from Paid By Mapping. Blank if card not mapped
+P	Paid By	Full name ("Marcus Reyes" / "Diane Reyes") from Paid By Mapping. Blank if card not mapped
 PRICING FORMULA (validated against real orders)
 
 On the order detail page, each item shows its own price and "xQty" (e.g. "$18.94 x2").
@@ -63,19 +63,19 @@ PROJECT MAPPING
 Derived from the shipping address on the order detail page.
 
 Shipping Address	Project
-Mountain Ave, Westfield NJ	Mountain
-Franklin Pl, South Orange NJ	Franklin
-Vose Ave, South Orange NJ	Vose
-Fairmount Ave, Chatham or Cranford NJ	Fairmount
-Circle View Dr or Berkeley Heights NJ	Circleview
-Ridgewood NJ	Ridgewood
-Joan St, Kendall Park NJ	Joan
-Preston Ave, Cranford NJ	Preston
+Ashford property address	Ashford
+Elmsworth property address	Elmsworth
+Dunmore property address	Dunmore
+Cedarcrest property address	Cedarcrest
+Brookline property address	Brookline
+Graystone property	Graystone
+Foxglove property address	Foxglove
+Hawthorne property address	Hawthorne
 New York NY	NYC
 Any other address	Record the raw shipping address as text (do not write "Personal" here)
 BUSINESS / PERSONAL (column O)
 
-Based on product description only. Address is not a factor (Preston in particular receives both business supplies and personal items).
+Based on product description only. Address is not a factor (Hawthorne in particular receives both business supplies and personal items).
 
 Construction, renovation, home improvement product -> Business
 Clothing, food, toys, personal care, hobby/gift items, accessories -> Personal
@@ -84,13 +84,13 @@ PAID BY MAPPING (column P)
 Match the card last-4 shown as Payment Instrument (col J) against this list. Value written to col P is the full name.
 
 Card	Paid By
-Mastercard ...2586	Jerry Cheng
-Mastercard ...3520	Jerry Cheng
-Mastercard ...2897	Annie Cheng
-Visa ...0565	Annie Cheng
-Visa ...0714	Annie Cheng
-Visa ...9117	Annie Cheng
-Visa ...9725	Annie Cheng
+Mastercard ...2586	Marcus Reyes
+Mastercard ...3520	Marcus Reyes
+Mastercard ...2897	Diane Reyes
+Visa ...0565	Diane Reyes
+Visa ...0714	Diane Reyes
+Visa ...9117	Diane Reyes
+Visa ...9725	Diane Reyes
 Mastercard ...3842	Unconfirmed - leave P blank
 Mastercard ...9781	Unconfirmed - leave P blank
 Any other card	Leave P blank, flag in column N with the card's last-4 for stakeholder confirmation
