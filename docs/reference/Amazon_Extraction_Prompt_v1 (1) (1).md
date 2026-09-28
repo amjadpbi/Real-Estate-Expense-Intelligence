@@ -81,23 +81,23 @@ Amazon has no PO/Job-equivalent field, so Project is derived from the shipping a
 
 | Shipping Address | Project |
 |---|---|
-| Mountain Ave, Westfield NJ | Mountain |
-| Franklin Pl, South Orange NJ | Franklin |
-| Vose Ave, South Orange NJ | Vose |
-| Fairmount Ave, Chatham or Cranford NJ | Fairmount |
-| Circle View Dr or Berkeley Heights NJ | Circleview |
-| Ridgewood NJ | Ridgewood |
-| Joan St, Kendall Park NJ | Joan |
-| Preston Ave, Cranford NJ | Preston |
-| 350 W 42nd St, New York NY (or other NYC address) | NYC, and flag in col N: "NYC address, confirm project/ownership" |
-| 7 Dahlia Rd, Somerset NJ | record as "Dahlia Rd" and flag in col N: "Dahlia Rd, confirm project classification" |
+| Ashford property address | Ashford |
+| Elmsworth property address | Elmsworth |
+| Dunmore property address | Dunmore |
+| Cedarcrest property address | Cedarcrest |
+| Brookline property address | Brookline |
+| Graystone property | Graystone |
+| Foxglove property address | Foxglove |
+| Hawthorne property address | Hawthorne |
+| New York City address | NYC, and flag in col N: "NYC address, confirm project/ownership" |
+| Unmapped address | record as "Unmapped address" and flag in col N: "Unmapped address, confirm project classification" |
 | Any other address | Record the raw shipping address as text, do not write "Personal" here |
 
 ---
 
 ## BUSINESS / PERSONAL (column O)
 
-Based on product description ONLY, never on shipping address. This was a confirmed prior mistake (an earlier pass defaulted everything to Business by address, Preston in particular receives both construction supplies and personal household items like food, pet treats, kids' workbooks, personal care, so address cannot decide this).
+Based on product description ONLY, never on shipping address. This was a confirmed prior mistake (an earlier pass defaulted everything to Business by address, Hawthorne in particular receives both construction supplies and personal household items like food, pet treats, kids' workbooks, personal care, so address cannot decide this).
 
 - Construction, renovation, home improvement, tools, fixtures -> Business
 - Food, household consumables, clothing, toys, personal care, electronics for personal use, gifts -> Personal
@@ -112,13 +112,13 @@ Map to column P using the table below (last-4 based, consistent with other suppl
 
 | Card | Paid By |
 |---|---|
-| Mastercard ...2586 | Jerry Cheng |
-| Mastercard ...3520 | Jerry Cheng |
-| Visa ...0565 | Annie Cheng |
-| Visa ...9117 | Annie Cheng |
-| Visa ...9725 | Annie Cheng |
-| Visa ...4086 | Annie Cheng |
-| Visa ...1816 | Annie Cheng |
+| Mastercard ...2586 | Marcus Reyes |
+| Mastercard ...3520 | Marcus Reyes |
+| Visa ...0565 | Diane Reyes |
+| Visa ...9117 | Diane Reyes |
+| Visa ...9725 | Diane Reyes |
+| Visa ...4086 | Diane Reyes |
+| Visa ...1816 | Diane Reyes |
 | Visa ...9476 | Unconfirmed (Jerry vs Annie conflict), leave P blank, flag in col N |
 | Any other card | Leave P blank, flag in col N with the card's last-4 for stakeholder confirmation |
 
@@ -148,7 +148,7 @@ One row per Purchase or Return as defined above, sorted by Tranaction Date. Leav
 ## EDGE CASES - Note in column N for the specific row, or report at the end
 
 - Multi-item order with an unallocated refund (see Refund Handling step 3)
-- NYC or Dahlia Rd shipping addresses (see Project Mapping)
+- NYC or Unmapped address shipping addresses (see Project Mapping)
 - Card not in Payment Mapping table, or Payment Method Type missing card detail
 - A product description that is ambiguous between Business and Personal (e.g. generic tools/supplies that could be for either)
 - Order Status = Cancelled (skipped, no Purchase row, but worth noting in the final report if volume is unexpectedly high)
