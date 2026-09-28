@@ -1,12 +1,12 @@
 # SCHWAB (FAIRMOUNT / ANNIE CHENG) STATEMENT PROCESSING -> V3 FORMATTED OUTPUT (v1)
 
 ## CONTEXT
-This is Annie Cheng's Schwab bank account, used for the Fairmount property. This prompt covers standalone processing of a Schwab CSV export with no V2 cross-check. Every transaction in the export gets its own V3 row. Nothing is dropped, including transfers, interest, and autopayments.
+This is Diane Reyes's Schwab bank account, used for the Cedarcrest property. This prompt covers standalone processing of a Schwab CSV export with no V2 cross-check. Every transaction in the export gets its own V3 row. Nothing is dropped, including transfers, interest, and autopayments.
 
 ## SETUP
 Source: a Schwab CSV export with columns Date, Status, Type, CheckNumber, Description, Withdrawal, Deposit, RunningBalance. Only process rows with Status = "Posted". Ask the user what date range to process if the file spans more than one pull.
 
-Output: V3's 16 columns (A:P), one row per statement line, ready to paste into the Fairmount tab (or Schwab tab) of the V3 Google Sheet.
+Output: V3's 16 columns (A:P), one row per statement line, ready to paste into the Cedarcrest tab (or Schwab tab) of the V3 Google Sheet.
 
 ---
 
@@ -22,14 +22,14 @@ Output: V3's 16 columns (A:P), one row per statement line, ready to paste into t
 | F | Unit Price | Same value as Total Paid (col G) |
 | G | Total Paid (Sales Tax Inc.) | Withdrawal amount or Deposit amount, always recorded as a POSITIVE number (see Sign Convention below) |
 | H | Transaction Type | "Purchase", "Deposit", or "Pass Through", see Transaction Type Rules |
-| I | Project | "Fairmount" by default for Purchase rows classified Real Estate Related. Blank for Pass Through and Deposit rows |
+| I | Project | "Cedarcrest" by default for Purchase rows classified Real Estate Related. Blank for Pass Through and Deposit rows |
 | J | Payment Instrument | Always "Schwab" |
 | K | Department | Per Classification below, blank for Pass Through rows |
 | L | Class | Per Classification below, blank for Pass Through rows |
 | M | Subclass | Always blank |
 | N | Reconciliatoin Status | Blank unless a genuine issue, see Edge Cases |
-| O | Purchasing Nature / Business / Personal | "Real Estate Related" for Purchase rows tied to Fairmount. Blank for Pass Through and Deposit rows |
-| P | Paid By | Always "Annie Cheng" |
+| O | Purchasing Nature / Business / Personal | "Real Estate Related" for Purchase rows tied to Cedarcrest. Blank for Pass Through and Deposit rows |
+| P | Paid By | Always "Diane Reyes" |
 
 ---
 
@@ -55,7 +55,7 @@ Apply in this order:
 
 ## PROJECT (column I)
 
-Default every Purchase-type row classified Real Estate Related to **Fairmount**. Leave Project blank on Pass Through and Deposit rows, since those are not project expenses.
+Default every Purchase-type row classified Real Estate Related to **Cedarcrest**. Leave Project blank on Pass Through and Deposit rows, since those are not project expenses.
 
 If a Description clearly references a different property, override the default and flag in column N for confirmation, do not silently reassign.
 
@@ -98,4 +98,4 @@ If a Description doesn't match a known payee, apply domain knowledge the same wa
 - ACH description ambiguous between a credit card autopayment and a genuine vendor payment (Need Review - confirm which card/vendor this settles)
 - A Description that doesn't match any known vendor and can't be classified by domain knowledge
 - A Withdrawal or Deposit whose Type doesn't match any rule above (new Type value not yet seen, e.g. WIRE, FEE)
-- A transaction that appears to belong to a property other than Fairmount
+- A transaction that appears to belong to a property other than Cedarcrest
