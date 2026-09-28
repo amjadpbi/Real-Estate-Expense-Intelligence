@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+<head>
+<base target="_top">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0F1F3D;--navy2:#1A3260;--blue:#2563EB;--blue-bg:#EFF6FF;
+  --green:#16A34A;--green-bg:#F0FDF4;--red:#DC2626;--red-bg:#FEF2F2;
+  --amber:#B45309;--text:#1E293B;--muted:#64748B;
+  --border:#E2E8F0;--bg:#F8FAFC;--white:#fff;
+}
+body{font-family:'Segoe UI',Arial,sans-serif;font-size:13px;color:var(--text);background:var(--bg);display:flex;height:100vh;overflow:hidden}
+
+/* Sidebar */
+.sidebar{width:158px;background:var(--navy);display:flex;flex-direction:column;flex-shrink:0}
+.sb-logo{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sb-brand{font-size:17px;font-weight:700;color:#fff;letter-spacing:.3px}
+.sb-sub{font-size:10px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.sb-nav{padding:10px 0;flex:1}
+.sb-btn{display:flex;align-items:center;gap:9px;width:100%;padding:10px 16px;background:none;border:none;border-left:3px solid transparent;color:rgba(255,255,255,.55);cursor:pointer;font-size:13px;text-align:left;transition:.15s}
+.sb-btn:hover{background:rgba(255,255,255,.07);color:#fff}
+.sb-btn.active{background:rgba(37,99,235,.22);color:#fff;border-left-color:var(--blue)}
+.sb-btn .si{font-size:14px;opacity:.9}
+.sb-foot{padding:10px 16px;font-size:10px;color:rgba(255,255,255,.2);border-top:1px solid rgba(255,255,255,.07)}
+
+/* Main */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:11px 22px;flex-shrink:0}
+.tb-title{font-size:15px;font-weight:700;color:var(--navy)}
+.tb-meta{font-size:11px;color:var(--muted);margin-top:3px}
+.content{flex:1;overflow-y:auto;padding:18px 22px}
+.content::-webkit-scrollbar{width:5px}
+.content::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* Pages */
+.page{display:none}.page.active{display:block}
+
+/* Filters */
+.filters{display:flex;gap:10px;align-items:center;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:18px;flex-wrap:wrap}
+.filters label{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.filters input[type=date]{padding:5px 8px;border:1px solid var(--border);border-radius:4px;font-size:12px;color:var(--text)}
+.filters select{padding:5px 8px;border:1px solid var(--border);border-radius:4px;font-size:12px;color:var(--text)}
+.btn-apply{padding:6px 16px;background:var(--navy);color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600}
+.btn-apply:hover{background:var(--navy2)}
+.btn-clear{padding:6px 12px;background:none;color:var(--muted);border:1px solid var(--border);border-radius:4px;cursor:pointer;font-size:12px}
+.btn-clear:hover{border-color:var(--red);color:var(--red)}
+
+/* KPI grid */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:10px}
+.kpi{background:var(--white);border:1px solid var(--border);border-left:4px solid var(--blue);border-radius:8px;padding:14px 16px;position:relative}
+.kpi.good{border-left-color:var(--green)}
+.kpi.bad{border-left-color:var(--red)}
+.kpi-lbl{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;display:flex;align-items:center;gap:5px;cursor:help}
+.kpi-ic{display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;border-radius:50%;border:1px solid var(--muted);font-size:9px;font-style:italic;color:var(--muted);flex-shrink:0}
+.kpi-val{font-size:26px;font-weight:700;color:var(--text);line-height:1}
+.kpi.good .kpi-val{color:var(--green)}
+.kpi.bad  .kpi-val{color:var(--red)}
+.kpi-tip{display:none;position:absolute;top:calc(100% + 6px);left:0;background:var(--navy);color:#fff;padding:9px 12px;border-radius:6px;font-size:11px;line-height:1.55;width:220px;z-index:99;box-shadow:0 4px 16px rgba(0,0,0,.22)}
+.kpi-lbl:hover .kpi-tip{display:block}
+
+/* Audit banner */
+.audit{margin-bottom:16px;padding:8px 14px;border-radius:6px;font-size:12px;font-weight:500;display:flex;align-items:center;gap:8px}
+.audit.ok{background:var(--green-bg);color:var(--green);border:1px solid #BBF7D0}
+.audit.warn{background:var(--red-bg);color:var(--red);border:1px solid #FECACA}
+
+/* Cards */
+.card{background:var(--white);border:1px solid var(--border);border-radius:8px;margin-bottom:16px;overflow:hidden}
+.card-hd{padding:11px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-hd h2{font-size:12px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.6px}
+.card-body{overflow-x:auto}
+
+/* Data tables (owner/matrix) */
+.dt{width:100%;border-collapse:collapse;font-size:12px;min-width:500px}
+.dt th{background:var(--bg);padding:8px 12px;text-align:right;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--border);white-space:nowrap}
+.dt th:first-child{text-align:left;min-width:110px;position:sticky;left:0;z-index:1}
+.dt td{padding:7px 12px;text-align:right;border-bottom:1px solid var(--border)}
+.dt td:first-child{text-align:left;font-weight:500;position:sticky;left:0;background:var(--white);z-index:1}
+.dt tr:hover td{background:#F8FAFC}
+.dt tr:hover td:first-child{background:#F8FAFC}
+.dt tr.tot td{background:var(--navy);color:#fff;font-weight:700;border-bottom:none}
+.dt tr.tot td:first-child{background:var(--navy)}
+.dt tr.tot:hover td,.dt tr.tot:hover td:first-child{background:var(--navy2)}
+.dt td.n{font-weight:700;color:var(--navy)}
+
+/* Summary table (reads Summary tab directly) */
+.st-wrap{overflow-x:auto}
+.st{width:100%;border-collapse:collapse;font-size:12px;min-width:600px}
+.st th{background:var(--bg);padding:8px 12px;text-align:right;font-weight:700;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--border);white-space:nowrap}
+.st th:first-child{text-align:left;min-width:140px;position:sticky;left:0;z-index:1;background:var(--bg)}
+.st td{padding:7px 12px;text-align:right;border-bottom:1px solid var(--border)}
+.st td:first-child{text-align:left;font-weight:600;position:sticky;left:0;background:var(--white);z-index:1}
+.st tr:hover td{background:#F8FAFC}
+.st tr:hover td:first-child{background:#F8FAFC}
+.st tr.tot td{background:var(--navy);color:#fff;font-weight:700;border-bottom:none}
+.st tr.tot td:first-child{background:var(--navy);color:#fff}
+.st tr.tot:hover td,.st tr.tot:hover td:first-child{background:var(--navy2)}
+.st td.n{font-weight:700;color:var(--navy)}
+.st tr.hc-row td:first-child{background:#FFF8E1}
+.st tr.hc-row td{background:#FFF8E1}
+.st tr.fin-row td:first-child{background:#EDE7F6}
+.st tr.fin-row td{background:#EDE7F6}
+.st tr.hc-row:hover td,.st tr.hc-row:hover td:first-child{background:#FFF0B3}
+.st tr.fin-row:hover td,.st tr.fin-row:hover td:first-child{background:#E1D5F5}
+.st-audit{padding:9px 14px;font-weight:600;font-size:12px}
+.st-audit.ok{background:var(--green-bg);color:var(--green)}
+.st-audit.warn{background:var(--red-bg);color:var(--red)}
+
+/* Supplier grouped table */
+.sup{width:100%;border-collapse:collapse;font-size:13px}
+.sup th{background:var(--bg);padding:9px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--border)}
+.sup th:last-child{text-align:right}
+.sup td{padding:10px 16px;border-bottom:1px solid var(--border);font-weight:500}
+.sup td:last-child{text-align:right;font-weight:700;color:var(--navy);font-size:14px}
+.sup tr:last-child td{border-bottom:none}
+.sup tr:hover td{background:var(--bg)}
+
+/* Sub-tabs */
+.stabs{display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid var(--border)}
+.stab{padding:5px 12px;border:1px solid var(--border);background:var(--white);border-radius:20px;cursor:pointer;font-size:11px;font-weight:600;color:var(--muted)}
+.stab:hover{border-color:var(--navy);color:var(--navy)}
+.stab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* Empty */
+.empty{padding:22px;text-align:center;color:var(--muted);font-size:12px;font-style:italic}
+
+/* Loading */
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;gap:14px}
+.spin{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.loading p{color:var(--muted);font-size:12px}
+
+/* Project KPI */
+.pkpi{background:var(--white);border:1px solid var(--border);border-left:4px solid var(--blue);border-radius:8px;padding:14px 18px;display:inline-block;margin-bottom:18px;min-width:180px}
+.pkpi-lbl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.pkpi-val{font-size:28px;font-weight:700;color:var(--navy);line-height:1}
+
+/* Tree table */
+.tree-wrap{overflow-x:auto}
+.tree{width:100%;border-collapse:collapse;font-size:12px}
+.tree th{background:var(--bg);padding:8px 12px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--border);white-space:nowrap}
+.tree th.r,.tree td.r{text-align:right}
+.tree td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.tree td.num{text-align:right;font-weight:700;color:var(--navy)}
+.tree td.pct{text-align:right;color:var(--muted);font-size:11px;width:54px}
+.tree td.barcell{width:110px}
+.dr{cursor:pointer}.dr td{background:var(--bg);font-weight:700}.dr:hover td{background:#E8F0FE}
+.cr{cursor:pointer}.cr td{background:var(--white)}.cr td:first-child{padding-left:28px}.cr:hover td{background:#F0FDF4}
+.sr td{background:var(--white)}.sr td:first-child{padding-left:48px;color:var(--text)}.sr td{color:var(--muted)}.sr:hover td{background:var(--bg)}
+.ei{display:inline-block;font-size:9px;color:var(--blue);margin-right:6px;transition:transform .15s;vertical-align:middle}
+.ei.open{transform:rotate(90deg)}
+.bb{background:#E2E8F0;border-radius:3px;height:6px;overflow:hidden;width:100px}
+.bf{height:100%;border-radius:3px}
+.bf.d{background:linear-gradient(90deg,#2563EB,#60A5FA)}
+.bf.c{background:linear-gradient(90deg,#16A34A,#86EFAC)}
+.bf.s{background:linear-gradient(90deg,#D97706,#FCD34D)}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-brand">Meridian</div>
+    <div class="sb-sub">Real Estate</div>
+  </div>
+  <nav class="sb-nav">
+    <button class="sb-btn active" id="navExec" onclick="showPage('exec')">
+      <span class="si">&#9783;</span> Executive
+    </button>
+    <button class="sb-btn" id="navProj" onclick="showPage('proj')">
+      <span class="si">&#10066;</span> Projects
+    </button>
+  </nav>
+  <div class="sb-foot">Meridian Dashboard</div>
+</aside>
+
+<div class="main">
+  <header class="topbar">
+    <div class="tb-title">Expense Dashboard</div>
+    <div class="tb-meta" id="hMeta">Loading...</div>
+  </header>
+
+  <div class="content">
+
+    <!-- EXECUTIVE SUMMARY -->
+    <div id="page-exec" class="page active">
+      <div id="loadExec" class="loading">
+        <div class="spin"></div><p>Loading dashboard data...</p>
+      </div>
+      <div id="execBody" style="display:none">
+        <div class="filters">
+          <label>From <input type="date" id="fromDate"></label>
+          <label>To <input type="date" id="toDate"></label>
+          <button class="btn-apply" onclick="applyExec()">Apply</button>
+          <button class="btn-clear" onclick="clearExec()">Clear</button>
+        </div>
+        <div class="kpis" id="kpiRow"></div>
+        <div id="auditBanner"></div>
+
+        <div class="card">
+          <div class="card-hd"><h2>Expense summary</h2></div>
+          <div class="card-body st-wrap" id="tblSupplier">
+            <div class="loading" style="padding:24px"><div class="spin"></div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-hd"><h2>Spending by owner and project</h2></div>
+          <div class="card-body" id="tblOwner"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-hd"><h2>Personal spending by supplier</h2></div>
+          <div class="card-body" id="tblPersonal"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-hd"><h2>Untagged transactions</h2></div>
+          <div class="stabs">
+            <button class="stab active" onclick="switchUntagged('project',this)">Missing project</button>
+            <button class="stab" onclick="switchUntagged('nature',this)">Missing purchasing nature</button>
+            <button class="stab" onclick="switchUntagged('paidBy',this)">Missing payment method</button>
+          </div>
+          <div class="card-body" id="tblUntagged"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT BREAKDOWN -->
+    <div id="page-proj" class="page">
+      <div id="loadProj" class="loading" style="display:none">
+        <div class="spin"></div><p>Loading project data...</p>
+      </div>
+      <div id="projBody">
+        <div class="filters">
+          <label>Project
+            <select id="projSel" onchange="loadProject()" style="margin-left:4px"></select>
+          </label>
+          <label>From <input type="date" id="projFrom"></label>
+          <label>To <input type="date" id="projTo"></label>
+          <button class="btn-apply" onclick="loadProject()">Apply</button>
+          <button class="btn-clear" onclick="clearProj()">Clear</button>
+        </div>
+        <div class="pkpi">
+          <div class="pkpi-lbl" id="pkpiLbl">Select a project</div>
+          <div class="pkpi-val" id="pkpiVal">--</div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><h2 id="treeTitle">Breakdown</h2></div>
+          <div class="tree-wrap" id="treeWrap"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+var DD = null, PD = null, curUT = 'project', TS = {};
+
+// FORMAT
+function K(n) {
+  if (n === null || n === undefined || isNaN(n)) return '$0';
+  var sg = n < 0 ? '-' : '', a = Math.abs(n);
+  if (a >= 1e6) return sg + '$' + strip(a/1e6) + 'M';
+  if (a >= 1e3) return sg + '$' + strip(a/1e3) + 'K';
+  return sg + '$' + Math.round(a).toLocaleString();
+}
+function strip(v) { return v.toFixed(1).replace(/\.0$/,''); }
+function esc(s)   { return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+function lbl(s)   { return (!s||s==='(blank)')?'<span style="color:var(--muted);font-style:italic">(unclassified)</span>':s; }
+
+// NAVIGATION
+function showPage(p) {
+  document.querySelectorAll('.page').forEach(function(e){ e.classList.remove('active'); });
+  document.getElementById('page-'+p).classList.add('active');
+  document.getElementById('navExec').classList.toggle('active', p==='exec');
+  document.getElementById('navProj').classList.toggle('active', p==='proj');
+  if (p==='proj' && !document.getElementById('projSel').options.length)
+    google.script.run.withSuccessHandler(populateProjects).getProjectList();
+}
+
+// EXEC FILTERS
+function applyExec() {
+  document.getElementById('loadExec').style.display = 'flex';
+  document.getElementById('execBody').style.display = 'none';
+  google.script.run.withSuccessHandler(renderExec).getDashboardData({
+    fromDate: document.getElementById('fromDate').value || null,
+    toDate:   document.getElementById('toDate').value   || null
+  });
+}
+function clearExec() {
+  document.getElementById('fromDate').value = '';
+  document.getElementById('toDate').value   = '';
+  applyExec();
+}
+
+// RENDER EXEC
+function renderExec(d) {
+  DD = d;
+  document.getElementById('loadExec').style.display  = 'none';
+  document.getElementById('execBody').style.display  = 'block';
+  document.getElementById('hMeta').textContent =
+    'Period: ' + d.period.from + ' to ' + d.period.to + '  \u00b7  Last updated ' + d.lastUpdated;
+
+  var k = d.kpis;
+  document.getElementById('kpiRow').innerHTML =
+    kpi('Grand total',    K(k.grandTotal),     'neutral', 'Every dollar recorded across all 7 supplier tabs for the selected date range.') +
+    kpi('Real estate',    K(k.realEstateTotal), 'neutral', 'Fully complete business spend: classified, has a project, and has a payment method on file.') +
+    kpi('Personal spend', K(k.personalTotal),   k.personalTotal  === 0 ? 'good' : 'bad',
+        'Should read $0. This ledger is for property expenses only. If non-zero, personal rows are still present and need to be removed.') +
+    kpi('Untagged',       K(k.untaggedTotal),   k.untaggedTotal  === 0 ? 'good' : 'bad',
+        'Every row missing at least one of: project, purchasing nature, or payment method. Equals the total shown in the tabs below. Should read $0 once all rows are complete.');
+
+  var ac = k.auditCheck, ab = document.getElementById('auditBanner');
+  if (ac === null) {
+    ab.innerHTML = '';
+  } else if (Math.abs(ac) < 0.01) {
+    ab.innerHTML = '<div class="audit ok">&#10003; Audit check: ' + K(ac) + ' - Summary and Payment Summary are balanced.</div>';
+  } else {
+    ab.innerHTML = '<div class="audit warn">&#9888; Audit check: ' + K(ac) + ' - Discrepancy between Summary and Payment Summary. Review formulas.</div>';
+  }
+
+  // Load summary table directly from Summary tab
+  document.getElementById('tblSupplier').innerHTML =
+    '<div class="loading" style="padding:24px"><div class="spin"></div></div>';
+  google.script.run
+    .withSuccessHandler(function(s) {
+      document.getElementById('tblSupplier').innerHTML = renderSummaryTable(s);
+    })
+    .getSummaryTable();
+
+  document.getElementById('tblOwner').innerHTML   = matrix(d.ownerProject, Object.keys(d.ownerProject), d.projects, 'Paid by');
+  document.getElementById('tblPersonal').innerHTML = supTable(d.personalBySup);
+  switchUntagged(curUT);
+}
+
+// RENDER SUMMARY TABLE (reads live Summary tab)
+function renderSummaryTable(s) {
+  var data = s.data;
+  if (!data || data.length < 3) return '<p class="empty">Summary tab not found or empty.</p>';
+
+  // Row index 1 = header row
+  var headers = data[1];
+  var activeCols = [];
+  headers.forEach(function(h, i) {
+    if (h !== '' && h !== null && h !== undefined) activeCols.push(i);
+  });
+  if (!activeCols.length) return '<p class="empty">No columns found in Summary tab.</p>';
+
+  var h = '<table class="st"><tr>';
+  activeCols.forEach(function(i) { h += '<th>' + (headers[i] || '') + '</th>'; });
+  h += '</tr>';
+
+  for (var r = 2; r < data.length; r++) {
+    var row      = data[r];
+    var label    = row[activeCols[0]];
+    if (label === null || label === '' || label === undefined) continue;
+    var labelStr = String(label);
+
+    var isTotal   = labelStr.toLowerCase() === 'total';
+    var isAudit   = labelStr.indexOf('Audit') > -1;
+    var isHC      = labelStr.toLowerCase().indexOf('holding') > -1;
+    var isFinance = labelStr.toLowerCase().indexOf('financ') > -1;
+
+    if (isAudit) {
+      var auditVal = 0;
+      activeCols.forEach(function(i) {
+        if (String(headers[i]).indexOf('Grand') > -1) auditVal = Number(row[i]) || 0;
+      });
+      var cls = Math.abs(auditVal) < 0.01 ? 'ok' : 'warn';
+      h += '<tr><td class="st-audit ' + cls + '" colspan="' + activeCols.length + '">'
+        + labelStr + ': ' + K(auditVal) + '</td></tr>';
+      continue;
+    }
+
+    var rowCls = isTotal ? ' class="tot"' : isHC ? ' class="hc-row"' : isFinance ? ' class="fin-row"' : '';
+    h += '<tr' + rowCls + '>';
+    activeCols.forEach(function(i) {
+      var cell = row[i];
+      var hdr  = String(headers[i] || '');
+      if (i === activeCols[0]) {
+        h += '<td>' + labelStr + '</td>';
+      } else if (hdr.indexOf('Pull') > -1 || hdr.indexOf('Date') > -1) {
+        h += '<td style="text-align:right;color:var(--muted);font-size:11px">' + (cell || '') + '</td>';
+      } else {
+        var num = Number(cell) || 0;
+        h += '<td class="n">' + (num !== 0 ? K(num) : '-') + '</td>';
+      }
+    });
+    h += '</tr>';
+  }
+
+  h += '</table>';
+  return h;
+}
+
+function kpi(label, value, type, tip) {
+  return '<div class="kpi' + (type==='good'?' good':type==='bad'?' bad':'') + '">' +
+    '<div class="kpi-lbl">' + label + ' <span class="kpi-ic">i</span>' +
+    '<div class="kpi-tip">' + tip + '</div></div>' +
+    '<div class="kpi-val">' + value + '</div></div>';
+}
+
+function matrix(mx, rowKeys, colKeys, rowLbl) {
+  if (!rowKeys.length) return '<p class="empty">No data.</p>';
+  var h = '<table class="dt"><tr><th>' + rowLbl + '</th>';
+  colKeys.forEach(function(c){ h += '<th>' + c + '</th>'; });
+  h += '<th>Total</th></tr>';
+  var ct = {}, grand = 0;
+  colKeys.forEach(function(c){ ct[c] = 0; });
+  rowKeys.forEach(function(r) {
+    if (!mx[r]) return;
+    var rt = 0; h += '<tr><td>' + r + '</td>';
+    colKeys.forEach(function(c) {
+      var v = (mx[r] && mx[r][c]) || 0; rt += v; ct[c] += v;
+      h += '<td class="n">' + (v ? K(v) : '-') + '</td>';
+    });
+    grand += rt; h += '<td class="n">' + K(rt) + '</td></tr>';
+  });
+  h += '<tr class="tot"><td>Total</td>';
+  colKeys.forEach(function(c){ h += '<td>' + K(ct[c]) + '</td>'; });
+  h += '<td>' + K(grand) + '</td></tr></table>';
+  return h;
+}
+
+function supTable(bySup) {
+  if (!bySup || !Object.keys(bySup).length) return '<p class="empty">None in the selected range.</p>';
+  var entries = Object.keys(bySup).map(function(s){ return {s:s, v:bySup[s]}; });
+  entries.sort(function(a,b){ return Math.abs(b.v) - Math.abs(a.v); });
+  var h = '<table class="sup"><tr><th>Supplier</th><th>Total</th></tr>';
+  entries.forEach(function(e){ h += '<tr><td>' + e.s + '</td><td>' + K(e.v) + '</td></tr>'; });
+  return h + '</table>';
+}
+
+function switchUntagged(which, btn) {
+  curUT = which;
+  document.querySelectorAll('.stab').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  if (!DD) return;
+  document.getElementById('tblUntagged').innerHTML = supTable(DD.untagged[which]);
+}
+
+// PROJECT BREAKDOWN
+function populateProjects(ps) {
+  var sel = document.getElementById('projSel');
+  sel.innerHTML = ps.map(function(p){ return '<option value="'+p+'">'+p+'</option>'; }).join('');
+  loadProject();
+}
+function clearProj() {
+  document.getElementById('projFrom').value = '';
+  document.getElementById('projTo').value   = '';
+  loadProject();
+}
+function loadProject() {
+  var p = document.getElementById('projSel').value;
+  if (!p) return;
+  TS = {};
+  document.getElementById('loadProj').style.display = 'flex';
+  document.getElementById('treeWrap').innerHTML     = '';
+  document.getElementById('pkpiVal').textContent    = '--';
+  google.script.run.withSuccessHandler(renderProject).getProjectBreakdown(p, {
+    fromDate: document.getElementById('projFrom').value || null,
+    toDate:   document.getElementById('projTo').value   || null
+  });
+}
+function renderProject(d) {
+  PD = d;
+  document.getElementById('loadProj').style.display   = 'none';
+  document.getElementById('pkpiLbl').textContent       = d.project + ' total spend';
+  document.getElementById('pkpiVal').textContent       = K(d.total);
+  document.getElementById('treeTitle').textContent     = d.project + ' - Breakdown by department, class and subclass';
+  drawTree();
+}
+
+function toggleD(dept) { TS['d:'+dept] = !TS['d:'+dept]; drawTree(); }
+function toggleC(dept, cls) { TS['c:'+dept+':'+cls] = !TS['c:'+dept+':'+cls]; drawTree(); }
+
+function drawTree() {
+  if (!PD) return;
+  var tree  = PD.tree, tot = PD.total;
+  var depts = Object.keys(tree).sort(function(a,b){ return tree[b].total - tree[a].total; });
+  var h = '<table class="tree"><tr><th style="min-width:200px;">Category</th><th class="r">Amount</th><th class="r">Share</th><th>Breakdown</th></tr>';
+  depts.forEach(function(dept) {
+    var d    = tree[dept], p = tot > 0 ? d.total/tot*100 : 0, open = !!TS['d:'+dept];
+    h += '<tr class="dr" onclick="toggleD(\''+esc(dept)+'\')">';
+    h += '<td><span class="ei'+(open?' open':'')+'"">&#9654;</span>'+lbl(dept)+'</td>';
+    h += '<td class="num">'+K(d.total)+'</td><td class="pct">'+p.toFixed(1)+'%</td>';
+    h += '<td class="barcell"><div class="bb"><div class="bf d" style="width:'+Math.min(p,100)+'%"></div></div></td></tr>';
+    if (open) {
+      var cls = Object.keys(d.classes).sort(function(a,b){ return d.classes[b].total - d.classes[a].total; });
+      cls.forEach(function(c) {
+        var cl = d.classes[c], cp = d.total > 0 ? cl.total/d.total*100 : 0, co = !!TS['c:'+dept+':'+c];
+        h += '<tr class="cr" onclick="toggleC(\''+esc(dept)+'\',\''+esc(c)+'\')">';
+        h += '<td><span class="ei'+(co?' open':'')+'"">&#9654;</span>'+lbl(c)+'</td>';
+        h += '<td class="num">'+K(cl.total)+'</td><td class="pct">'+cp.toFixed(1)+'%</td>';
+        h += '<td class="barcell"><div class="bb"><div class="bf c" style="width:'+Math.min(cp,100)+'%"></div></div></td></tr>';
+        if (co) {
+          var subs = Object.keys(cl.subclasses).sort(function(a,b){ return cl.subclasses[b] - cl.subclasses[a]; });
+          subs.forEach(function(s) {
+            var sv = cl.subclasses[s], sp = cl.total > 0 ? sv/cl.total*100 : 0;
+            h += '<tr class="sr"><td>'+lbl(s)+'</td>';
+            h += '<td class="num">'+K(sv)+'</td><td class="pct">'+sp.toFixed(1)+'%</td>';
+            h += '<td class="barcell"><div class="bb"><div class="bf s" style="width:'+Math.min(sp,100)+'%"></div></div></td></tr>';
+          });
+        }
+      });
+    }
+  });
+  document.getElementById('treeWrap').innerHTML = h + '</table>';
+}
+
+// INIT
+google.script.run.withSuccessHandler(renderExec).getDashboardData({});
+</script>
+</body>
+</html>
