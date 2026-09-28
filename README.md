@@ -1,61 +1,58 @@
-﻿# Real Estate Expense Tracking
+﻿# Real Estate Expense Intelligence
+
+Real-estate expense automation and project-level review workflow built around Google Apps Script, Sheets, and an operational dashboard.
 
 ## Project Overview
-This project is a real-estate expense tracking and automation workflow built around a Google Apps Script-driven dashboard and spreadsheet-based operational model. It consolidates multi-source expense data, normalizes project assignments, and surfaces exceptions for review.
-
-## Project Nature
-Real client engagement using anonymized/public-safe project data.
+This project consolidates supplier data, normalizes real-estate project assignments, and surfaces expense exceptions for review. The implementation centers on a spreadsheet-driven workflow and an HTML dashboard that summarize operational spending and review items.
 
 ## Business Context
-The workflow was designed to consolidate spending from multiple supplier channels and real-estate project sources into a shared operational view. The project includes supplier-specific import logic, project classification, and payment-owner review.
+This is a real client-style operational project, using anonymized/public-safe data. The project captures a multi-supplier expense workflow and is designed to improve visibility into project-level spend, ownership attribution, and unresolved exceptions.
 
-## Data
-- Source type: supplier exports, statement-like transaction records, and workbook-based operational data
-- Data format: Excel/Sheets workbook plus supplier extraction files
-- Data nature: anonymized/public-safe sample data
-- Included evidence: `Real_Estate_Expense_ANONYMIZED_SAMPLE.xlsx`, `Code.gs`, `Dashboard.html`, and supplier prompt files
+## Problem
+The workflow needed a consistent way to ingest supplier files, standardize project names and payment ownership, separate business and personal items where they were mixed, and expose review exceptions without losing accountability.
 
 ## Solution
-The project uses Google Sheets and Google Apps Script to:
-- read supplier data
-- normalize project names
-- identify personal vs business spend
-- attribute payment ownership
-- aggregate by project and vendor
-- surface unresolved items
-- display KPI results in a dashboard
+The repository contains Google Apps Script logic, a dashboard UI, and an anonymized spreadsheet sample representing the operational workflow. It standardizes vendor and project naming, aggregates totals by project and owner, and highlights exceptions for manual review.
 
-## Architecture / Workflow
-1. Supplier data is ingested into workbook tabs.
-2. Normalization rules standardize project, supplier, and payment fields.
-3. Summary tabs aggregate totals by project and owner.
-4. Missing or ambiguous records are highlighted for review.
-5. The dashboard renders KPI and breakdown views.
+## Data
+- Source type: supplier exports, statement-like records, and workbook-based operational data
+- Data nature: anonymized/public-safe operational sample
+- Key files: Real_Estate_Expense_ANONYMIZED_SAMPLE.xlsx, Code.gs, Dashboard.html, extraction prompt documents
 
-## Key Features
-- real-estate project consolidation
-- multi-supplier spend normalization
-- payment attribution review
-- business/personal classification logic
-- dashboard-based review layer
-- exception tracking for unresolved records
+## Technical Approach
+- import supplier data into spreadsheet tabs
+- normalize project, supplier, and payment fields
+- summarize totals by project and owner
+- flag unresolved or ambiguous items
+- present KPI and exception views in an HTML dashboard
 
-## Project Status
-This repository contains the public-safe implementation artifacts and anonymized evidence for the project. Client-sensitive identifiers and confidential metadata were excluded from the public-facing repository.
+## Key Analytical Areas
+- project spend review
+- supplier-level aggregation
+- payment attribution and ownership review
+- exception tracking
+- business vs personal classification logic
+
+## Evidence / Scope
+The repository contains the Apps Script implementation, dashboard UI, anonymized sample workbook, and extraction prompts. The evidence supports a semi-automated operational workflow with public-safe anonymized data, not a production system description or client-identifying information.
 
 ## Limitations
-- The public repo uses anonymized data only.
-- Client-specific private identifiers are intentionally excluded.
-- The public-facing materials reflect the workflow implementation and not the full private operational environment.
+- public-safe anonymized sample only
+- no live operational system integration evidence
+- no production deployment claims beyond the implemented workflow design
 
 ## Repository Structure
-- `Code.gs` — Apps Script logic
-- `Dashboard.html` — dashboard UI
-- `Real_Estate_Expense_ANONYMIZED_SAMPLE.xlsx` — anonymized sample workbook
-- supplier prompt files — extraction and normalization details
+- Code.gs — Apps Script logic
+- Dashboard.html — dashboard UI
+- Real_Estate_Expense_ANONYMIZED_SAMPLE.xlsx — anonymized sample workbook
+- extraction prompt files — workflow and normalization details
+- PROJECT_AUDIT.md — project evidence summary
 
-## Technologies
+## Tools & Technologies
 - Google Apps Script
 - Google Sheets / spreadsheet workflow
 - HTML dashboard
-- Excel-based source workbook
+- Excel workbook data
+
+## Project Status
+Real client-style project using anonymized operational data. The repository is intentionally public-safe and does not expose identifying client or property information.
