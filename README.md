@@ -16,7 +16,7 @@ The implementation combines:
 
 Google Sheets provided the operational data layer, Google Apps Script handled transformation and reporting logic, and an HTML dashboard exposed the resulting information for review.
 
-## Why This Project Is Technically Interesting
+## Why This Project Is More Than a Dashboard
 
 The difficult part was not building a dashboard.
 
@@ -35,7 +35,7 @@ Different sources represented the same business concepts in different ways:
 
 Each source had its own structure, naming conventions, missing values, return behavior, payment representation, and classification challenges.
 
-The engineering work was therefore largely **data engineering and data quality work before it became reporting**.
+The core work was therefore much broader than dashboard creation: **source handling, normalization, classification, reconciliation, automation, and operational reporting**.
 
 ## Business Problem
 
@@ -79,7 +79,7 @@ The important design principle was to **normalize first and report second**.
 
 Rather than building separate reporting logic for every supplier, source-specific data was transformed toward a common transaction structure so that downstream analysis could operate consistently.
 
-## Data Engineering & Transformation
+## Data Processing & Transformation
 
 The workflow standardized transaction records around fields such as:
 
@@ -222,7 +222,7 @@ This project demonstrates practical experience with:
 - source-specific extraction logic
 - data normalization
 - schema standardization
-- data quality engineering
+- data quality and reconciliation
 - entity/project mapping
 - payment attribution
 - business/personal classification
