@@ -19,7 +19,7 @@ A Mastercard statement export will be shared as a CSV (columns: Status, Date, De
 12. **Class** — blank, except for Real Estate Related rows, see Department/Class mapping in the Real Estate Related table below
 13. **Subclass** — blank
 14. **Reconciliatoin Status** — blank, unless you're genuinely uncertain about this row's Category/Vendor classification, in which case write `Need Review`
-15. **Paid By** (column O) — `Jerry Cheng` if Category is "Jerry Personal Business" or "Jerry Personal T&E", otherwise blank
+15. **Paid By** (column O) — `Marcus Reyes` if Category is "Jerry Personal Business" or "Jerry Personal T&E", otherwise blank
 16. **Category** — see classification below (extra column, for reconciliation only)
 17. **Vendor** — see classification below (extra column, for reconciliation only)
 
