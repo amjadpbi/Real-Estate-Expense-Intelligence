@@ -1,4 +1,6 @@
-﻿# Real Estate Expense Intelligence
+# Real Estate Expense Intelligence
+
+> **Public anonymization notice:** This repository is a public-safe demonstration of a real client engagement. All names, company identifiers, property/project names, addresses, payment-owner references, and other identifying details in the repository have been anonymized or replaced. The data shown here is synthetic/anonymized and does not represent real client data.
 
 Real-estate expense automation and project-level review workflow built around Google Apps Script, Sheets, and an operational dashboard.
 
